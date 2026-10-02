@@ -56,4 +56,5 @@ python3 $S/check_pages.py --pages ./build --org acaGPT --repo <RepoName> --check
 ## 版本
 
 - v1.0.1（2026-10-02）：补注端到端样本 `acaGPT/GHWikiMaker` 已归档为只读，wiki 首页人工创建步骤未实际完成，样本仅作流程留档。
+- v1.0.2（2026-10-02）：`references/gotchas.md` 新增第六节「可见性、归档与 wiki 开关的耦合」——归档仓库只读、public→private 会关闭 wiki、且 API 无法拉回，须网页端恢复；样本仓库已转私有并归档。
 - v1.0.0（2026-10-02）：首版。四脚本、四份参考文档、文本模板；端到端样本 `acaGPT/GHWikiMaker`。

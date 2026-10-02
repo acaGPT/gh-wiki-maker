@@ -36,7 +36,15 @@
 - 外链核验用 HEAD 请求；部分站点对 HEAD 返回 405，需回退 GET（只读前若干字节）。
 - 批量核验要加间隔并做指数退避，否则触发 429。
 
-## 六、其他
+## 六、可见性、归档与 wiki 开关的耦合
+
+- **归档仓库是只读的**：`PATCH archived=true` 后，改可见性与 `has_wiki` 均返回 `403 Repository was archived so is read-only`。要改这两项，必须先 `archived=false` 再改，最后视需要重新归档。
+- **public → private 会把 wiki 关掉**（2026-10-02 实测）：`PATCH private=true` 之后 `has_wiki` 由 `true` 变 `false`。
+- **关掉的 wiki 用 API / CLI 拉不回来**：`PATCH -f has_wiki=true`（含 JSON body 形式）、`gh repo edit --enable-wiki` 都返回成功但 `has_wiki` 仍为 `false`；归档状态下则直接 403。
+- 恢复方式：进入 `https://github.com/<org>/<repo>/settings` → **Features** → 勾选 **Wiki**，由人在网页端操作。
+- 结论：发布流程里 **visibility 一旦变更就要回头检查 `has_wiki`**，并在建库时就把可见性一次定好，避免转换触发开关丢失。
+
+## 七、其他
 
 - 页面里不要写 `[[_TOC_]]` 之外的高级 Gollum 语法（如 `[[include:...]]`），GitHub 未启用。
 - wiki 页面**不渲染** LaTeX 数学公式；需要公式就用代码块或图片。
